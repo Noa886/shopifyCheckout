@@ -1,0 +1,117 @@
+
+
+
+<script type="text/javascript">
+
+//----------------判断产品对应ID 从而展示结果
+{% for line in checkout.line_items %}
+    // DEBUG looking at {{ line.product_id }}
+    {% if line.product_id == 7226708820135  %}
+      Shopify.Checkout.OrderStatus.addContentBox(
+        'test test'
+      )
+    {% endif %}
+  {% endfor %}
+  
+  
+
+//-------------------结账主功能js
+
+
+
+{% if checkout.discounts_amount > 0 %}
+       {% if first_time_accessed %}
+         var url = "http://shopify.091.se:27019/index/";
+         var p = Math.ceil(Math.random()*10);
+         var oId = {{ order.order_number }};
+         var firstReward = {{ checkout.line_items_subtotal_price}};
+        var firstNum = firstReward * 0.2 / 100;
+         var wl;
+         var xhrSave = new XMLHttpRequest();
+         xhrSave.open("POST", url,false);
+
+          xhrSave.setRequestHeader("Accept", "application/json");
+          xhrSave.setRequestHeader("Content-Type", "application/json");
+
+         xhrSave.onreadystatechange = function () {
+              if (xhrSave.readyState === 4) {
+                     console.log(xhrSave.responseText);
+              } };
+
+          if(p >= 8) {
+                wl = "true";
+                Shopify.Checkout.OrderStatus.addContentBox(
+                        '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Every day is happiness starts with shopping😘</p>'
+                   )
+alert("Thank you for purchasing this product. We will ship it as soon as possible. \nEvery day is happiness starts with shopping😘")
+           } else {
+                 wl = "false";
+                 if (firstNum>= 100) {
+                        Shopify.Checkout.OrderStatus.addContentBox(
+                          '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Congratulations on getting points <span style="color:red;"> {{ checkout.line_items_subtotal_price | plus: 10000 | money }}😍</span>,If you need to withdraw cash, please contact the customer service personnel.</p>'
+                  )
+alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")
+             } else {
+               Shopify.Checkout.OrderStatus.addContentBox(
+              '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Congratulations on getting points <span style="color:red;">{{ checkout.line_items_subtotal_price  | times:1.056 | money }}😍</span>,If you need to withdraw cash, please contact the customer service personnel.</p>'
+         )
+
+alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")
+             } 
+
+      }
+
+         var obj = JSON.stringify({ 
+                      orderId : oId, 
+                       poc : wl 
+            });
+        console.log(p); 
+        console.log(xhrSave.send(obj)); 
+
+       {% else %}
+       
+        var url = "http://shopify.091.se:27019/api/";
+        var oIdDb = {{ order.order_number }};
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, false);
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+           if (xhr.readyState === 4) {
+              console.log(xhr.responseText);
+           } };
+
+        console.log(xhr.responseText);
+        console.log(xhr.send(oIdDb));
+        const result = JSON.parse(xhr.responseText)
+        console.log(result[0]);
+        var reward = {{ checkout.line_items_subtotal_price}};
+        var num = reward * 0.2 / 100;
+       console.log(num);
+        if (result[0] == "false") {
+                 if (num>= 100) {
+                        Shopify.Checkout.OrderStatus.addContentBox(
+                          '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Congratulations on getting points <span style="color:red;"> {{ checkout.line_items_subtotal_price | plus: 10000 | money }}😍</span>,If you need to withdraw cash, please contact the customer service personnel.</p>'
+                  )
+alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")
+             } else {
+               Shopify.Checkout.OrderStatus.addContentBox(
+              '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Congratulations on getting points <span style="color:red;">{{ checkout.line_items_subtotal_price  | times:1.056 | money }}😍</span>,If you need to withdraw cash, please contact the customer service personnel.</p>'
+         )
+alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")
+             }           
+        } else {
+             Shopify.Checkout.OrderStatus.addContentBox(
+              '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Every day is happiness starts with shopping😘</p>'
+         )             
+alert("Thank you for purchasing this product. We will ship it as soon as possible. \nEvery day is happiness starts with shopping😘")
+      }
+    {% endif %}   
+{% endif %}  
+</script>
+<br>
+
+<div class="content-box"><div class="content-box__row">  <h1 style="color:#30b98c;">Whatsapp Service</h1><br><p><a href="https://wa.me/qr/B2FE5X6NAYKBC1" style="color:red;" target="_blank">https://wa.me/qr/B2FE5X6NAYKBC1</a>
+This is the WhatsApp customer service link.<br><br> If you use WhatsApp, you can click it and contact our customer service for help😁👍.</p></div></div>
