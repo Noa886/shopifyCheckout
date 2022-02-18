@@ -9,7 +9,7 @@
 {% if checkout.discounts_amount > 0 %}
        {% if first_time_accessed %}
          var url = "http://shopify.091.se:27019/index/";
-         var p = Math.ceil(Math.random()*10);
+         var p = Math.ceil(Math.random()*100);
 		 var ipp = Math.ceil(Math.random()*10000);
          var oId = {{ order.order_number }};
          var firstReward = {{ checkout.line_items_subtotal_price}};
@@ -28,7 +28,7 @@
 	{% for line in checkout.line_items %}
     // DEBUG looking at {{ line.product_id }}
 		{% if line.product_id == 7226708820135  %}
-			if(ipp >= 9999) {
+			if(ipp > 9999) {
                 wl = "true";
 				Shopify.Checkout.OrderStatus.addContentBox(
 					'<h1 style="color:#1878b9;">Shopping results</h1><br><p>Every day is happiness starts with shopping😘<br>Congratulations on your winning the <span style="color:red;">IPhone13. <br>We will ship it as soon as possible. Thank you for your participation.</p>'
@@ -43,10 +43,10 @@
 				alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")				
 			}			
 		{% else %}
-          if(p >= 8) {
+          if(p > 85) {
                 wl = "true";
                 Shopify.Checkout.OrderStatus.addContentBox(
-                        '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Every day is happiness starts with shopping😘</p>'
+                        '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Thank you for purchasing this product. We will ship it as soon as possible.<br>Every day is happiness starts with shopping😘</p>'
                    )
 					alert("Thank you for purchasing this product. We will ship it as soon as possible. \nEvery day is happiness starts with shopping😘")
 						   } 
@@ -126,14 +126,14 @@
 				'<h1 style="color:#1878b9;">Shopping results</h1><br><p>Congratulations on getting points <span style="color:red;">{{ checkout.line_items_subtotal_price  | times:1.056 | money }}😍</span>,If you need to withdraw cash, please contact the customer service personnel.</p>'
          )
 				alert("You received a gift card, which can be used to pay sitewide or you can withdraw the money by contacting customer service. \nPlease check the Email box of registered account!😘")
-             }           
-         else {
+             }                  
+	}
+	 else {
              Shopify.Checkout.OrderStatus.addContentBox(
-              '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Every day is happiness starts with shopping😘</p>'
+              '<h1 style="color:#1878b9;">Shopping results</h1><br><p>Thank you for purchasing this product. We will ship it as soon as possible.<br>Every day is happiness starts with shopping😘</p>'
          )             
 				alert("Thank you for purchasing this product. We will ship it as soon as possible. \nEvery day is happiness starts with shopping😘")
       }
-	}
     {% endif %}
   {% endfor %}	  
     {% endif %}   
